@@ -11,7 +11,7 @@ After that is complete, go to Project -> Project Settings -> Plugins and click e
 ### TaskMgr.delayed_call(1.0, test_function, [])
 Delays the `test_function` function from being called for 1 second. Any arguments may be passed into the Array.
 ### TaskMgr.process_call(test_function, [])
-Begins calling the `test_function` function every frame, as if called from a `_process` function. Any arguments may be passed into the Array.
+Begins calling the `test_function` function every frame, as if called from a `_process` function. Any arguments may be passed into the Array. Note that the first argument of the function call will always be a `delta` argument.
 ### TaskMgr.delay(0.5)
 Acts as a shorthand for `get_tree().create_timer(0.5).timeout`. May be awaited.
 
