@@ -24,6 +24,8 @@ class Task extends Node:
 		args = p_args
 		timer = p_timer
 		is_process = p_is_process
+		if not is_process:
+			set_process(false)
 		start_time = p_start_time
 
 		name = 'Task-' + str(task_id)
