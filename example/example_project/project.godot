@@ -21,4 +21,4 @@ TaskMgr="*res://addons/task_mgr/task_mgr.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/task_manager/plugin.cfg", "res://addons/task_mgr/plugin.cfg")
+enabled=PackedStringArray("res://addons/task_mgr/plugin.cfg")
