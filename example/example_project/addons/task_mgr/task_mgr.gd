@@ -1,11 +1,16 @@
 extends Node
+## A simple Timer-based task manager that allows specifying delay times for functions,
+## as well as handling frame-based functions as a standalone.
 
-# Returning TaskMgr.AGAIN on a delayed_call function will call it again with the same delay.
+## Returning TaskMgr.AGAIN on a delayed_call function will call it again with the same delay.
 const AGAIN: StringName = &"TaskMgr-AGAIN"
 
+## The next available Task ID.
 static var task_id: int = 0
 
+## All currently in-use SceneTreeTimers used to track function delays.
 var timers: Array[SceneTreeTimer] = []
+## All currently active Tasks.
 var tasks: Dictionary = {}
 
 
@@ -54,18 +59,19 @@ class Task extends Node:
 
 #region Public Funcs
 
-func process_call(function: Callable, args: Array) -> int:
-	## Begins calling a function every process frame
-	## Functions called via process_call always have delta as the first argument.
+## Begins calling a function every process frame
+## Functions called via process_call always have delta as the first argument.
+func process_call(function: Callable, args: Array = []) -> int:
 	var new_task = _make_new_task(null, function, args, true, 0.0)
 	return new_task.task_id
 
-func delayed_call(time: float, function: Callable, args: Array) -> int:
-	## Calls a function after the specified time without disrupting code execution
+## Calls a function after the specified time without disrupting code execution.
+func delayed_call(time: float, function: Callable, args: Array = []) -> int:
 	var new_timer = _make_new_timer(time)
 	var new_task = _make_new_task(new_timer, function, args, false, time)
 	return new_task.task_id
 
+## Given a Task ID, cancel the active Task with the same ID.
 func cancel_task(cancel_task_id: int):
 	if cancel_task_id in tasks.keys():
 		var task = tasks[cancel_task_id]
@@ -73,8 +79,8 @@ func cancel_task(cancel_task_id: int):
 		tasks.erase(cancel_task_id)
 		remove_child(task)
 
+## A simplified timer await. Does not return a Task ID and is not cancellable.
 func delay(time: float) -> Signal:
-	## A simplified timer await. Does not return a Task ID and is not cancellable.
 	var new_timer = _make_new_timer(time)
 	return new_timer.timeout
 
