@@ -34,7 +34,10 @@ class Task extends Node:
 		name = 'Task-' + str(task_id)
 		if is_process:
 			name += '-Process'
-		name += '-' + str(callback.get_object().name) + '-' + str(callback.get_method())
+		if callback.get_object():
+			name += '-' + str(callback.get_object().name) + '-' + str(callback.get_method())
+		else:
+			name += '-' + str(callback.get_method())
 
 		if timer:
 			timer.timeout.connect(complete_callback)
