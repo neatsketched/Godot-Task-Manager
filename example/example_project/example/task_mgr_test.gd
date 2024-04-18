@@ -16,6 +16,10 @@ func _ready():
 	TaskMgr.cancel_task(task_id_3)
 	await TaskMgr.delay(0.5)
 	TaskMgr.delayed_call(0.5, repeating_print, [])
+	var barrier: SignalBarrier = SignalBarrier.new([TaskMgr.delay(2.0), TaskMgr.delay(3.0), \
+			TaskMgr.delay(4.0)], SignalBarrier.BarrierType.ALL, 1.0)
+	barrier.s_complete.connect(func(): print('signal barrier done'))
+	barrier.s_timeout.connect(func(): print('signal barrier timeout'))
 
 func print_foo():
 	print('Foo')
