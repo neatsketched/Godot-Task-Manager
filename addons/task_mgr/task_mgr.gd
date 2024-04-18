@@ -34,7 +34,9 @@ class Task extends Node:
 		name = 'Task-' + str(task_id)
 		if is_process:
 			name += '-Process'
-		if callback.get_object():
+		if callback.get_object() is Resource:
+			name += '-' + str(callback.get_object().resource_name) + '-' + str(callback.get_method())
+		elif callback.get_object():
 			name += '-' + str(callback.get_object().name) + '-' + str(callback.get_method())
 		else:
 			name += '-' + str(callback.get_method())
