@@ -38,11 +38,6 @@ func _init(p_signal_arr: Array[Signal] = [], p_barrier_type := BarrierType.ALL, 
 
 ## Start listening to all signals passed
 func _connect_to_signals() -> void:
-	if _signal_arr.size() == 0:
-		# Emit immediately if we have no signals
-		s_complete.emit()
-		return
-
 	for s: Signal in _signal_arr:
 		_connect_to_signal(s)
 
