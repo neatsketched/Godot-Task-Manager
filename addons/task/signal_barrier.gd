@@ -1,4 +1,4 @@
-extends Object
+extends Node
 class_name SignalBarrier
 ## A container that waits for one or all of multiple signals to be emitted
 ## before emitting its complete signal.
@@ -18,7 +18,7 @@ enum BarrierType { ANY, ALL }
 @export var _timeout_time: float = 0.0
 
 var _signals_completed: Array[Signal] = []
-var _timeout_task_id: int = 0
+var _timeout_task: Task
 
 ## The barrier has emitted its complete signal and is no longer active
 var has_completed: bool = false
@@ -34,7 +34,7 @@ func _init(p_signal_arr: Array[Signal] = [], p_barrier_type := BarrierType.ALL, 
 	_timeout_time = p_timeout_time
 	_connect_to_signals()
 	if _timeout_time > 0.0:
-		_timeout_task_id = TaskMgr.delayed_call(_timeout_time, _timeout)
+		_timeout_task = Task.delayed_call(null, _timeout_time, _timeout)
 
 ## Start listening to all signals passed
 func _connect_to_signals() -> void:
@@ -61,14 +61,15 @@ func _got_signal_emit(s: Signal) -> void:
 func _complete() -> void:
 	has_completed = true
 	s_complete.emit()
-	TaskMgr.cancel_task(_timeout_task_id)
-	free.call_deferred()
+	if _timeout_task:
+		_timeout_task = _timeout_task.cancel()
+	queue_free.call_deferred()
 
 ## The barrier has timed out, cancel everything and emit the timeout signal
 func _timeout() -> void:
 	has_timed_out = true
 	s_timeout.emit()
-	free.call_deferred()
+	queue_free.call_deferred()
 
 #endregion
 #region Public Funcs

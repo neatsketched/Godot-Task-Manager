@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://0tae3cruvk5t"]
 
-[ext_resource type="Script" path="res://example/task_mgr_test.gd" id="1_tpiu1"]
+[ext_resource type="Script" uid="uid://cdvx1anet63sn" path="res://example/task_test.gd" id="1_wtcfe"]
 
-[node name="TaskMgrTest" type="Node"]
-script = ExtResource("1_tpiu1")
+[node name="TaskTest" type="Node"]
+script = ExtResource("1_wtcfe")
